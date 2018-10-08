@@ -1,0 +1,22 @@
+﻿@model AppointmentHub.Core.ViewModels.PaginationViewModel
+
+@if (@Model.TotalPages > 0)
+{
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+            <li class="page-item @(Model.PageNum == 0 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action(Model.Action, Model.Controller, new {query = Model.SearchTerm, pageNum = Model.PageNum - 1 })" tabindex="-1">Previous</a>
+            </li>
+            @for (int i = 0; i <= Model.TotalPages; i++)
+            {
+                if (i != Model.PageNum)
+                {
+                    <li class="page-item"><a class="page-link" href="@Url.Action(Model.Action, Model.Controller, new {query = Model.SearchTerm, pageNum = i })">@i</a></li>
+                }
+            }
+            <li class="page-item @(Model.PageNum == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action(Model.Action, Model.Controller, new {query = Model.SearchTerm, pageNum = Model.PageNum + 1 })">Next</a>
+            </li>
+        </ul>
+    </nav>
+}

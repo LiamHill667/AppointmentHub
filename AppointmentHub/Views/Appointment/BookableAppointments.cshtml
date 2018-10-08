@@ -1,0 +1,31 @@
+﻿@model AppointmentHub.Core.ViewModels.AvailabilityViewModel
+
+@{
+    ViewBag.Title = "BookableAppointments";
+}
+
+<h2>BookableAppointments</h2>
+
+@using (Html.BeginForm("SearchBookable", "Appointment"))
+{
+    @Html.AntiForgeryToken();
+
+    <div class="form-group">
+        <div id="searchAvailabity" class="input-group">
+            @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control", placeholder = "Search by Date" })
+            <span class="input-group-append">
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </span>
+        </div>
+    </div>
+}
+
+
+<div id="user-availability" class="row">
+    @foreach (var appointment in Model.Availability)
+    {
+        Html.RenderPartial("_BookableAvailabilityCardPartial", appointment);
+    }
+</div>
+
+@{Html.RenderPartial("~/Views/Shared/_PaginationPartial.cshtml", Model);}

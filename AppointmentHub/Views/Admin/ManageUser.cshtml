@@ -1,0 +1,53 @@
+﻿@model AppointmentHub.Core.ViewModels.ManageUserViewModel
+@using AppointmentHub.Core.Common
+
+@{
+    ViewBag.Title = "ManageUser";
+}
+
+<h2>@Model.Heading User</h2>
+
+@using (Html.BeginForm(Model.Action, "Admin"))
+{
+    @Html.AntiForgeryToken();
+    @Html.ValidationSummary();
+    @Html.HiddenFor(m => m.Id);
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", autofocus = "autofocus" })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email)
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Email)
+    </div>
+    if (string.IsNullOrEmpty(Model.Id))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+        </div>
+    }
+    <div class="form-group">
+        @Html.LabelFor(m => m.Roles1)
+        @Html.DropDownListFor(m => m.Roles1, new MultiSelectList(AppRoles.GetRoleNames(), Model.Roles.Select(r => r.Name)), new { @class = "form-control", multiple = "multiple" })
+        @Html.ValidationMessageFor(m => m.Roles1)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+
+    <button type="button" class="btn btn-secondary" onclick="window.location.href=('@Url.Action("Users","Admin")')">Cancel</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

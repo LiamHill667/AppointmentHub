@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Calendar";
+}
+
+
+
+<div class="container">
+    <h2>Calendar</h2>
+
+
+    <div class="row">
+        <div class="col-12 grid-cell">
+            <h2>@DateTime.Now.Date.ToString("dd MMM")</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @for (int i = 0; i < 24; i++)
+            {
+
+                <div class="row">
+                    <div class="col-1 grid-cell">
+                        @if (i >= 12)
+                        {
+                            <span>@i pm</span>
+                        }
+                        else
+                        {
+                            <span>@i  am</span>
+                        }
+                    </div>
+                    <div class="col-11 grid-cell">
+                        <p> event </p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

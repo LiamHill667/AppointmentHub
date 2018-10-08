@@ -1,0 +1,49 @@
+﻿@model AppointmentHub.Core.ViewModels.AvailabilityFormViewModel
+
+@{
+    ViewBag.Title = Model.Heading;
+}
+
+<h2>@Model.Heading</h2>
+
+@using (Html.BeginForm(Model.Action, "Availability", FormMethod.Post ,new {id = "availability-form" }))
+{
+    @Html.ValidationSummary()
+    <p class="alert alert-info">All field are <strong>required</strong>.</p>
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    <div class="form-group">
+        @Html.LabelFor(m => m.Date)
+        @Html.TextBoxFor(m => m.Date, new { @class = "form-control date-control", autofocus = "autofocus", placeholder = "dd/MM/yyyy" })
+        @Html.ValidationMessageFor(m => m.Date)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.StartTime)
+        @Html.DropDownListFor(m => m.StartTime, new SelectList(Model.SelectableStartTimes, Model.StartTime), new { @class = "form-control js-start-time-picker", placeholder = "HH:mm" })
+        @Html.ValidationMessageFor(m => m.StartTime)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.EndTime)
+        @Html.DropDownListFor(m => m.EndTime, new SelectList(Model.SelectableEndTimes, Model.EndTime), new { @class = "form-control", placeholder = "HH:mm" })
+        @Html.ValidationMessageFor(m => m.EndTime)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+
+    <button class="btn btn-secondary" onclick="window.location.href=('@Url.Action("Index", "Availability")')">Cancel</button>
+}
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+           
+
+            TimePickerController.init($("#availability-form"));
+
+        });
+    </script>
+}

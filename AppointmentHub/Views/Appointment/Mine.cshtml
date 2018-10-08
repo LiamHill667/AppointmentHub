@@ -1,0 +1,40 @@
+﻿@model AppointmentHub.Core.ViewModels.AppointmentListViewModel
+@{
+    ViewBag.Title = "Mine";
+}
+
+<h2>Mine</h2>
+
+@using (Html.BeginForm("SearchMine", "Appointment"))
+{
+    @Html.AntiForgeryToken();
+
+    <div class="form-group">
+        <div id="searchAvailabity" class="input-group">
+            @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control", placeholder = "Search by Date" })
+            <span class="input-group-append">
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </span>
+        </div>
+    </div>
+}
+
+
+    <div id="appointments" class="row">
+        @foreach (var appointment in Model.Appointments)
+        {
+
+            Html.RenderPartial("_AppointmentCardPartial", appointment);
+        }
+    </div>
+
+@{ Html.RenderPartial("_PaginationPartial", Model);}
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            MineController.init($("#appointments"))
+        });
+    </script>
+}

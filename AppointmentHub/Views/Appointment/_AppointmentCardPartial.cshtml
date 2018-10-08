@@ -1,0 +1,16 @@
+﻿@model AppointmentHub.Core.ViewModels.AppointmentViewModel
+
+
+
+<div class="col-12 col-sm-6 col-md-3">
+    <div class="card border-primary my-2">
+        <div class="card-header">
+            <h5 class="card-title">@Model.DateTime.ToString("dd MMM")</h5>
+        </div>
+        <div class="card-body">
+            <h2>@Model.Requested.Name</h2>
+            <p class="card-text text-muted">@Model.DateTime.ToString("HH:mm") til @Model.DateTime.Add(Model.TimeSpan).ToString("HH:mm")</p>
+            <a href="#" class="js-cancel-appointment" data-appointment-id="@Model.Id">Cancel</a>
+        </div>
+    </div>
+</div>

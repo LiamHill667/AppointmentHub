@@ -1,0 +1,55 @@
+﻿@model AppointmentHub.Core.ViewModels.UsersViewModel
+
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users</h2>
+
+@using (Html.BeginForm("UsersSearch", "Admin"))
+{
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <div id="searchUsers" class="input-group">
+            @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control", placeholder = "Search by Name" })
+            <span class="input-group-append">
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </span>
+        </div>
+    </div>
+
+}
+
+    <div class=" table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Roles</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.Name</td>
+                        <td>@user.RolesToString()</td>
+                        <td>@Html.ActionLink("Edit", "ManageUser", "Admin", new { id = user.Id }, new { @class = "nav-link" })</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-primary" onclick="window.location.href ='@Url.Action("ManageUser","Admin")'">Add</button>
+            </div>
+        </div>
+
+

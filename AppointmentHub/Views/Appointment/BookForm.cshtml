@@ -1,0 +1,60 @@
+﻿@model AppointmentHub.Core.ViewModels.BookFormViewModel
+
+@{
+    ViewBag.Title = "BookForm";
+}
+
+<h2>Book an Appointment</h2>
+<span>Appointment with @Model.Availability.UserName on @Model.DateTime.ToString("dd/MM/yyyy")</span>
+
+@using (Html.BeginForm("Book", "Appointment", FormMethod.Post, new { id = "book-form" }))
+{
+    @Html.ValidationSummary()
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Availability.Id)
+    @Html.HiddenFor(m => m.Availability.UserName)
+    @Html.HiddenFor(m => m.Availability.DateTime)
+    @Html.HiddenFor(m => m.Availability.TimeSpan)
+    @Html.HiddenFor(m => m.Date)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Subject)
+        @Html.TextBoxFor(m => m.Subject, new { @class = "form-control", autofocus = "autofocus" })
+        @Html.ValidationMessageFor(m => m.Subject)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Type)
+        @Html.DropDownListFor(m => m.Type.Id, new SelectList(Model.Types, "Id", "Name"), "", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Type)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.StartTime)
+        @Html.DropDownListFor(m => m.StartTime, new SelectList(Model.SelectableStartTimes, Model.StartTime), new { @class = "form-control js-start-time-picker", placeholder = "HH:mm" })
+        @Html.ValidationMessageFor(m => m.StartTime)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.EndTime)
+        @Html.DropDownListFor(m => m.EndTime, new SelectList(Model.SelectableEndTimes, Model.EndTime), new { @class = "form-control", placeholder = "HH:mm" })
+        @Html.ValidationMessageFor(m => m.EndTime)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Book</button>
+
+    <button type="button" class="btn btn-secondary" onclick="window.location.href=('@Url.Action("Index","Appointment")')">Cancel</button>
+
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+
+            TimePickerController.init($("#book-form"));
+
+        });
+    </script>
+}
+

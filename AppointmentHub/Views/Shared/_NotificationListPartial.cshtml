@@ -1,0 +1,43 @@
+﻿@model IEnumerable<AppointmentHub.Core.ViewModels.NotificationViewModel>
+@using AppointmentHub.Core.Common
+@using Microsoft.AspNet.Identity
+
+<li class="notifications dropdown">
+    <a class="nav-link" href="#" id="notificationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-globe"></i>
+        <span class="badge js-notifications-count @(Model.Count() > 0 ? "" : "hidden")">@Model.Count()</span>
+    </a>
+
+    @if (Model.Count() > 0)
+    {
+    <div class="dropdown-menu" aria-labelledby="notificationsDropdown">
+        @foreach (var notification in Model)
+        {
+            if (notification.Appointment.Requested.Id == User.Identity.GetUserId())
+            {
+                switch (notification.Type)
+                {
+                    case NotificationType.AppointmentCreated:
+                        <div class="dropdown-item"><span class="highlight">@notification.Appointment.Type.Name Appointment with @notification.Appointment.Requestee.Name at @notification.Appointment.DateTime.ToString("dd/MM/yyyy")</span> created.</div>
+                        break;
+                    case NotificationType.AppointmentCanceled:
+                        <div class="dropdown-item"><span class="highlight">@notification.Appointment.Type.Name Appointment with @notification.Appointment.Requestee.Name at @notification.Appointment.DateTime.ToString("dd/MM/yyyy")</span> canceled.</div>
+                        break;
+                }
+            }
+            else
+            {
+                switch (notification.Type)
+                {
+                    case NotificationType.AppointmentCreated:
+                        <div class="dropdown-item"><span class="highlight">@notification.Appointment.Type.Name Appointment with @notification.Appointment.Requested.Name at @notification.Appointment.DateTime.ToString("dd/MM/yyyy")</span> created.</div>
+                        break;
+                    case NotificationType.AppointmentCanceled:
+                        <div class="dropdown-item"><span class="highlight">@notification.Appointment.Type.Name Appointment with @notification.Appointment.Requested.Name at @notification.Appointment.DateTime.ToString("dd/MM/yyyy")</span> canceled.</div>
+                        break;
+                }
+            }
+        }
+    </div>
+    }
+</li>

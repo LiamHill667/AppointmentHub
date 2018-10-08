@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNet.Identity
+@using AppointmentHub.Core.Common
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="navbar-nav navbar-right">
+            <li class="notifications">
+                <a href="#">
+                    <i class="fa fa-globe"></i>
+                    <span class="badge js-notifications-count hide"></span>
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="@Url.Action("Index", "Manage")" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @User.Identity.GetUserName()
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    @if (User.IsInRole(AppRoles.Contact))
+                    {
+                        <a class="dropdown-item" href="@Url.Action("Index", "Availability")">My Availablity</a>
+                    }
+                    @if (User.IsInRole(AppRoles.Admin))
+                    {
+                        <a class="dropdown-item" href="@Url.Action("users", "Admin")">Admin</a>
+                    }
+                    <a class="dropdown-item" href="@Url.Action("Mine", "Appointment")">My Appointments</a>
+                    <a class="dropdown-item" href="@Url.Action("Index", "Appointment")">Book Appointments</a>
+                    <a class="dropdown-item" href="#">My Calendar</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item ">Log off</a>
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="navbar-nav navbar-right">
+        <li class="nav-item">@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "nav-link" })</li>
+        <li class="nav-item">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</li>
+    </ul>
+}

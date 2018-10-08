@@ -1,0 +1,15 @@
+﻿@model AppointmentHub.Core.ViewModels.UserAvailabilityViewModel
+
+
+<div class="col-12 col-sm-6 col-md-3">
+    <div class="card border-info my-2">
+        <div class="card-header">
+            <h5 class="card-title">@Model.DateTime.ToString("dd MMM")</h5>
+        </div>
+        <div class="card-body">
+            <h2>@Model.User.Name</h2>
+            <p class="card-text text-muted">@Model.DateTime.ToString("HH:mm") til @Model.DateTime.Add(Model.TimeSpan).ToString("HH:mm")</p>
+            <a href="@Url.Action("Book", "Appointment", new { availabilityId = Model.Id})">Book</a>
+        </div>
+    </div>
+</div>
